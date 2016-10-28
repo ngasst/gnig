@@ -39,7 +39,7 @@ function createConfig(isDebug) {
 			filename: "[name].js"
 		},
 		resolve: {
-			extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.graphml', '.xml'],
+			extensions: ['.webpack.js', '.web.js', '.ts', '.js'],
 			alias: {
 				shared: path.join(__dirname, "..", "shared"),
 				root: path.join(__dirname)
@@ -50,16 +50,6 @@ function createConfig(isDebug) {
 				{ 
 					test: /\.ts$/,
 					loader: "ts-loader",
-					exclude: /node_modules/ 
-				},
-				{ 
-					test: /\.graphml$/,
-					loader: "xml-loader",
-					exclude: /node_modules/ 
-				},
-				{ 
-					test: /\.xml$/,
-					loader: "xml-loader",
 					exclude: /node_modules/ 
 				}
 			]
