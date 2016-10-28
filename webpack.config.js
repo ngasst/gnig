@@ -42,8 +42,7 @@ function createConfig(isDebug) {
 			extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.graphml', '.xml'],
 			alias: {
 				shared: path.join(__dirname, "..", "shared"),
-				root: path.join(__dirname),
-				"so-logger": path.join(__dirname, ".", "src", "config", "logger", "so-logger")
+				root: path.join(__dirname)
 			}
 		},
 		module: {
