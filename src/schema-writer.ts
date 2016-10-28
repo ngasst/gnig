@@ -1,7 +1,7 @@
 import { Collection } from './graphml-parser';
 import { writeFile } from 'fs-extra';
 import { resolve, join } from 'path';
-import * as chalck from 'chalk';
+import * as chalk from 'chalk';
 import * as pluralize from 'pluralize';
 
 export class Writer {
@@ -16,7 +16,7 @@ export class Writer {
         return new Promise((resolve, reject) => {
             Promise.all(promises)
             .then(() => {
-                console.log(chalck.magenta(`Done writing all ${collections.length} collection interfaces!`));
+                console.log(chalk.magenta(`Done writing all ${collections.length} collection interfaces!`));
                 resolve(true);
             })
             .catch(err => reject(err));
@@ -28,8 +28,12 @@ export class Writer {
             let path: string = join(baseDest, `${collName}.interface.ts`);
             let data = `import { ObjectID } from 'mongodb'; \r\ninterface ${this.getInterfaceName(collName)} ${def}`;
             writeFile(path, data, (err) => {
-                if (err) reject(err);
-                console.log(chalck.green(`written >> ${collName}.interface.ts`));
+                if (err) {
+                    console.info(chalk.red(`An error occured.\nThis probably means you entered a path to a directory that doesn't exist. \nPlease correct this and try again`));
+                    reject(false);
+                    process.exit(1);
+                };
+                console.log(chalk.green(`written >> ${collName}.interface.ts`));
                 resolve(true);
             });
         });
