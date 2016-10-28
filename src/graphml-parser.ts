@@ -1,13 +1,22 @@
 import * as XML from 'xml2js';
 import { readFile } from 'fs-extra';
+import * as chalk from 'chalk';
 export class GraphParser {
     protected getGraph(path: string): Promise<Graph[]> {
         let Parser: XML.Parser = new XML.Parser();
         return new Promise((resolve, reject) => {
             readFile(path, (err, data: Buffer) => {
-                if (err) reject(err);
+                if (err) {
+                    console.info(chalk.red(`An error occured. This probably means you entered a path that doesn't point to a valid .graphml file. \n Please correct this and try again`));
+                    reject(false);
+                    process.exit(1);
+                }
                 Parser.parseString(data.toString(), (err, result) => {
-                    if (err) reject(err);
+                    if (err) {
+                        console.info(chalk.red(`An error occured. This means we couldn't parse the .graphml file you provided. \n Please make sure of its integrity and try again.`));
+                        reject(false);
+                        process.exit();
+                    }
                     resolve(result.graphml.graph);
                 });
             });
