@@ -5,7 +5,7 @@ This tool has a very specific use-case. While it's not for everyone, I believe i
 ## Usage
 (Make sure you read the use-case and caveats sections below!)
 
-### General Install
+### Global Install
     npm install -g graphml-schema-generator
 
 ### Local Install
@@ -36,5 +36,10 @@ This way, the whole schema can be defined inside a tool such as yEd and the inte
 
 ## Caveats
 There are a few things to take into consideration before using this module.
-    * Only works with yEd and TypeScript. Should there be any type of interest in this, I don't mind expanding the scope, but I first developed this for my own use and it suits them just fine.
-    * Inside of yEd, you need to use the first type of node inside of "Entity Relationship" category. This is because this node allows for two labels (one for the entity name, and one for the parameters). 
+* Only works with yEd and TypeScript. Should there be any type of interest in this, I don't mind expanding the scope, but I first developed this for my own use and it suits them just fine.
+* Inside of yEd, you need to use the first type of node inside of "Entity Relationship" category. This is because this node allows for two labels (one for the entity name, and one for the parameters).
+
+## TODO:
+* Generalize usage to more graphml tools
+* Complete readme file
+* Provide examples to the usage section
