@@ -1,4 +1,6 @@
 import { resolve } from 'path';
+import { SchemaWriter } from './schema-writer';
+import * as chalk from 'chalk';
 let args: string[] = process.argv.filter((a, i) => i > 1);
 
 let path: string;
@@ -23,15 +25,17 @@ let graph: Graph = schema.graphml.graph[0];
 
 let data = [].concat(...graph.node.map(d => d['data']).map(d => d[0]['y:GenericNode'])).filter(d => d != undefined).map(d => d['y:NodeLabel']);
 
-let fschema = data.map((datum: string[]) => Object.assign({}, {collName: datum[0]['_'], collectionDef: datum[1]['_']}));
+let fschema: any = data.map((datum: string[]) => Object.assign({}, {collName: datum[0]['_'], collectionDef: datum[1]['_']})).filter(s => ('collName' in s && 'collectionDef' in s));
 
-let final = fschema.map(sc => {
-    let raw: string = sc.collectionDef;
-    let clean: string = raw.replace(new RegExp(/(_?[\w]*??:\??)/g), "$1");
-    return Object.assign({}, sc, {collectionDef: clean});
-});
-
-console.log(final);
+SchemaWriter.write(fschema)
+.then(() => {
+    console.log(chalk.cyan('Process completed successfully!'));
+    process.exit(0);
+})
+.catch((err) => {
+    console.log(chalk.red(err));
+    process.exit(1);
+})
 
 interface Gml {
     graphml: {
@@ -57,4 +61,9 @@ interface Node {
         id: string;
     };
     data: Object[];
+}
+
+export interface Schema {
+    collName: string;
+    collectionDef: string;
 }
