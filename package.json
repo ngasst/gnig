@@ -1,6 +1,6 @@
 {
   "name": "graphml-schema-generator",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A tool to generate TypeScript interfaces from graphml graphical files.",
   "main": "index.js",
   "scripts": {
