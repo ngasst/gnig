@@ -1,12 +1,14 @@
 {
-  "name": "gml",
+  "name": "graphml-schema-generator",
   "version": "0.1.6",
-  "description": "",
+  "description": "A tool to generate TypeScript interfaces from graphml graphical files.",
   "main": "index.js",
   "scripts": {
-    "bump:patch": "gulp prod && node build/release-patch && git add package.json && git commit -m\"Bump patch version\" && npm publish"
+    "bump:patch": "gulp prod && node build/release-patch && git add package.json && git commit -m\"Bump patch version\" && npm publish",
+    "bump:minor": "gulp prod && node build/release-minor && git add package.json && git commit -m\"Bump minor version\" && npm publish",
+    "bump:major": "gulp prod && node build/release-major && git add package.json && git commit -m\"Bump major version\" && npm publish"
   },
-  "author": "Gaston Ndanyuzwe",
+  "author": "Gaston Ndanyuzwe <gaston.ndanyuzwe@infinteacacia.com>",
   "license": "ISC",
   "preferGlobal": true,
   "bin": {

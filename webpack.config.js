@@ -24,6 +24,7 @@ function createConfig(isDebug) {
 	
 	if (!isDebug) {
 		plugins.push(new webpack.optimize.UglifyJsPlugin());
+		plugins.push(new webpack.BannerPlugin({banner: '#!/usr/bin/env node', raw: true, entryOnly: true}));
 	}
 	
 	// ---------------------
@@ -32,7 +33,10 @@ function createConfig(isDebug) {
 		target: "node",
 		devtool: "source-map",
 		entry: {
-			index: "./src/app.ts"
+			index: "./src/app.ts",
+			'release-patch': "./scripts/release-patch.ts",
+			'release-minor': "./scripts/release-minor.ts",
+			'release-major': "./scripts/release-major.ts"
 		},
 		output: {
 			path: path.join(__dirname, "build"),
