@@ -1,7 +1,7 @@
 {
-  "name": "graphml-schema-generator",
-  "version": "1.1.7",
-  "description": "A tool to generate TypeScript interfaces from graphml graphical files.",
+  "name": "gnig",
+  "version": "0.1.0",
+  "description": "A tool to generate TypeScript interfaces from graphml neo4j models.",
   "main": "index.js",
   "scripts": {
     "bump:patch": "gulp prod && node build/release-patch && git add package.json && git commit -m\"Bump patch version\" && npm publish",
@@ -12,7 +12,7 @@
   "license": "ISC",
   "preferGlobal": true,
   "bin": {
-    "gschema": "build/index.js"
+    "gnig": "build/index.js"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
