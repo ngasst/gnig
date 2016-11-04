@@ -1,6 +1,6 @@
 {
   "name": "gnig",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A tool to generate TypeScript interfaces from graphml neo4j models.",
   "main": "index.js",
   "scripts": {
