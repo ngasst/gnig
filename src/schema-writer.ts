@@ -1,4 +1,4 @@
-import { Interface } from './extractor';
+import { Interface, Method } from './extractor';
 import { writeFile } from 'fs-extra';
 import { resolve, join } from 'path';
 import * as chalk from 'chalk';
@@ -40,7 +40,17 @@ export class Writer {
     }
 
     protected getContent(i: Interface): string {
-        let meths: string = i.methods.map(m => `${m.name}: () => any`).reduce((acc, val) => acc.concat(`\r\n\t${val};`), '');
+        let meths: string = i.methods
+        					 .filter(m => m.name.charAt(0) !== m.name.charAt(0).toUpperCase())
+                             .sort((a: Method, b: Method) => {
+                                 if (a.name.toUpperCase() < b.name.toUpperCase())
+                                 	return -1;
+                                 if (a.name.toUpperCase() > b.name.toUpperCase())
+                                 	return 1;
+                                 return 0;
+                             })
+        					 .map(m => `${m.name}: () => any`)
+                             .reduce((acc, val) => acc.concat(`\r\n\t${val};`), '');
         let content: string = `export interface I${i.label}Neo {${meths}\r\n}
         `;
         return content;

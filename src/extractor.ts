@@ -38,7 +38,7 @@ export class Extractor {
 
     protected extractMethods(node: Node, edges: Edge[], nodes: Node[]) {
         let methods: Method[] = edges
-        .filter((e: Edge) => (e.source === node.id && e.label.length > 1))
+        .filter((e: Edge) => e.source === node.id)
         .map((e: Edge) => {
             let dest: Node = nodes.filter((n, i) => n.id === e.target)[0];
 			let method: Method = {
@@ -49,8 +49,7 @@ export class Extractor {
                     .concat(dest.label)
             };
             return method;
-        })
-        .sort();
+        });
 
         return methods;
     }
@@ -64,6 +63,6 @@ export interface Interface {
 	methods: Method[];
 }
 
-interface Method {
+export interface Method {
     name: string;
 }
