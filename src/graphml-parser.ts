@@ -2,68 +2,85 @@ import * as XML from 'xml2js';
 import { readFile } from 'fs-extra';
 import * as chalk from 'chalk';
 export class GraphParser {
-    protected getGraph(path: string): Promise<Graph[]> {
-        let Parser: XML.Parser = new XML.Parser();
+    protected getGraph(path: string): Promise<Graph> {
+        let parser: XML.Parser = new XML.Parser();
         return new Promise((resolve, reject) => {
             readFile(path, (err, data: Buffer) => {
                 if (err) {
-                    console.info(chalk.red(`An error occured. This probably means you entered a path that doesn't point to a valid .graphml file. \n Please correct this and try again`));
+                    console.info(chalk.red(`An error occured. This probably means you entered a path that doesn't point to a valid .graphml file.\nPlease correct this and try again`));
                     reject(false);
                     process.exit(1);
                 }
-                Parser.parseString(data.toString(), (err, result) => {
+                parser.parseString(data.toString(), (err, result) => {
                     if (err) {
-                        console.info(chalk.red(`An error occured. This means we couldn't parse the .graphml file you provided. \n Please make sure of its integrity and try again.`));
+                        console.info(chalk.red(`An error occured. This means we couldn't parse the .graphml file you provided.\nPlease make sure of its integrity and try again.`));
                         reject(false);
                         process.exit();
                     }
-                    resolve(result.graphml.graph);
+                    resolve(result);
                 });
             });
         });
     }
 
-    parse(p: string): Promise<Collection[]> {
+    parse(p: string): Promise<Graph> {
         return new Promise((resolve, reject) => {
-            Promise.resolve()
-            .then(() => {
-                return this.getGraph(p);
-            })
-            .then((g: Graph[]) => {
-                let graph: Graph = g[0];
-                let labels: Label[] = [].concat(...graph.node.map(d => d['data']).map(d => d[0]['y:GenericNode'])).filter(d => d != undefined).map(d => d['y:NodeLabel']);
-                let collections: Collection[] = labels.map((datum: Label) => Object.assign({}, {collName: datum[0]['_'], collectionDef: datum[1]['_']})).filter(s => ('collName' in s && 'collectionDef' in s));
-                resolve(collections);
-            })
-            .catch(err => reject(err));
-        });
-    }
+        	this.getGraph(p)
+            .then((data: Graph) => {
+				let worked: any = Object.assign({}, {nodes: data['graphml']['graph']['0']['node'], edges: data['graphml']['graph']['0']['edge']});
+		        let nodes: any[] = worked.nodes;
+		        let edges: any[] = worked.edges;
+		        let cleanNodes: any[] = nodes.map(n => Object.assign({}, {label: n['data'][0]['y:GenericNode'][0]['y:NodeLabel'][0]['_'] , properties: n['data'][0]['y:GenericNode'][0]['y:NodeLabel'][1]['_'], id: n['$']['id']}));
+		        //console.log(edges[0]['data'][0]['y:PolyLineEdge'][0]['y:EdgeLabel'][0]['_']);
+		        let cleanEdges: any[] = edges.map(e => {
+		            	let edge: any;
+			            if ('y:PolyLineEdge' in e['data'][0] && 'y:EdgeLabel' in e['data'][0]['y:PolyLineEdge'][0]) {
+			                let label: string = e['data'][0]['y:PolyLineEdge'][0]['y:EdgeLabel'][0]['_'].match(new RegExp(/[(A-Z)]+/, 'g')).join('_');
+			                let props = e['data'][0]['y:PolyLineEdge'][0]['y:EdgeLabel'][0]['_'].replace(label, '');
+							edge = Object.assign({}, 
+				            {
+				                id: e['$']['id'],
+				                source: e['$']['source'],
+				                target: e['$']['target'],
+				                label: label,
+				                properties: props
+				            });
+			            } else {
+				        	edge = Object.assign({}, 
+				            {
+				                id: e['$']['id'],
+				                source: e['$']['source'],
+				                target: e['$']['target'],
+				                label: '',
+				                properties: {}
+				            });
+			            }
+				            return edge;
+				        
+			        });
+					
+			        let cleanData: any = Object.assign({}, {nodes: cleanNodes, edges: cleanEdges});
+					resolve(cleanData);
+            });
+	    });
+	}
 }
 
-
-interface Graph {
-    '$': {
-        edgedefault: string;
-        id: string;
-    };
-    data: Object[];
-    node: Node[];
-    edge: Object[];
+export interface Node {
+    label: string;
+    id: string;
+    incoming?: Edge[];
+    outgoing?: Edge[];
 }
 
-interface Label {
-    _: string;
-    '$': any;
+export interface Edge {
+	source: string;
+    target: string;
+    label: string;
+    properties: Object;
 }
 
-interface Node {
-    '$': {
-        id: string;
-    };
-    data: Object[];
-}
-
-export interface Collection {
-    collName: string;
-    collectionDef: string;
-}
+export interface Graph {
+    nodes: Node[];
+    edges: Edge[];
+} 

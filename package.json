@@ -1,12 +1,16 @@
 {
   "name": "gnig",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "description": "A tool to generate TypeScript interfaces from graphml neo4j models.",
   "main": "index.js",
   "scripts": {
-    "bump:patch": "node ./node_modules/node-bumper/build/index patch --git --npm",
-    "bump:minor": "node ./node_modules/node-bumper/build/index minor --git --npm",
-    "bump:major": "node ./node_modules/node-bumper/build/index major --git --npm"
+    "bump:patch": "node ./node_modules/node-bumper/build/index patch --git",
+    "bump:patch:pub": "node ./node_modules/node-bumper/build/index patch --git --npm",
+    "bump:minor": "node ./node_modules/node-bumper/build/index minor --git",
+    "bump:minor:pub": "node ./node_modules/node-bumper/build/index minor --git --npm",
+    "bump:major": "node ./node_modules/node-bumper/build/index major --git",
+    "bump:major:pub": "node ./node_modules/node-bumper/build/index major --git --npm",
+    "tsnode": "node ./node_modules/ts-node/dist/index"
   },
   "author": "Gaston Ndanyuzwe <gaston.ndanyuzwe@infinteacacia.com>",
   "license": "ISC",
@@ -30,6 +34,7 @@
     "rimraf": "^2.5.4",
     "source-map-support": "^0.4.5",
     "ts-loader": "^0.9.5",
+    "ts-node": "^1.6.1",
     "typescript": "^2.0.6",
     "webpack": "2.1.0-beta.20",
     "webpack-dev-middleware": "^1.6.1",

@@ -34,9 +34,7 @@ function createConfig(isDebug) {
 		devtool: "source-map",
 		entry: {
 			index: "./src/app.ts",
-			'release-patch': "./scripts/release-patch.ts",
-			'release-minor': "./scripts/release-minor.ts",
-			'release-major': "./scripts/release-major.ts"
+			extractor: "./src/extractor.ts"
 		},
 		output: {
 			path: path.join(__dirname, "build"),

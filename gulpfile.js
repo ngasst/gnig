@@ -18,6 +18,12 @@ gulp.task("dev:watch", gulp
 		devServerBuild,
 		devServerWatch
 	));
+gulp.task("prod:watch", gulp
+	.series(
+		"clean",
+		prodServerBuild,
+		prodServerWatch
+	));
 
 gulp.task("dev", gulp
 	.series(
@@ -45,6 +51,12 @@ function devServerBuild(callback) {
 function devServerWatch() {
 	devServerWebpack.watch({poll: 1000, aggregateTimeOut: 300}, (error, stats) => {
 		outputWebpack("Dev:Server", error, stats);
+	});
+}
+
+function prodServerWatch() {
+	prodServerWebpack.watch({poll: 1000, aggregateTimeOut: 300}, (error, stats) => {
+		outputWebpack("Prod:Server", error, stats);
 	});
 }
 

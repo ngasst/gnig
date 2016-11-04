@@ -1,4 +1,4 @@
-# graphml-schema-generator
+# GNIG
 A tool to generate TypeScript interfaces from graphml graphical files.
 This tool has a very specific use-case. While it's not for everyone, I believe it to be easy enough to modify to suit similar needs.
 
