@@ -34,7 +34,9 @@ function createConfig(isDebug) {
 		devtool: "source-map",
 		entry: {
 			index: "./src/app.ts",
-			extractor: "./src/extractor.ts"
+			extractor: "./src/extractor.ts",
+			parser: "./src/graphml-parser.ts",
+			writer: "./src/schema-writer.ts"
 		},
 		output: {
 			path: path.join(__dirname, "build"),
